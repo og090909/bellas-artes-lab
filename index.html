@@ -1,0 +1,1498 @@
+<!DOCTYPE html>
+<html lang="es" data-theme="orange">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <title>Bellas Artes Lab // Performance</title>
+  <script src="https://cdn.tailwindcss.com/3.4.17"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:ital,wght@0,700;0,800;0,900;1,800;1,900&family=Doto:wght@600;700;800&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
+  <style>
+    :root,
+    html[data-theme="orange"] {
+      --bg: #050505;
+      --surface: #0f0f0f;
+      --surface-2: #161616;
+      --border: #222222;
+      --border-strong: #383838;
+      --text: #f5f5f5;
+      --muted: #848484;
+      --accent: #ff4500;
+      --accent-rgb: 255, 69, 0;
+      --accent-text: #ffffff;
+      --active-card-bg: #ffffff;
+      --active-card-text: #060606;
+      --active-card-muted: #4a4a4a;
+      --active-card-border: #ffffff;
+      --ring-track: #1d1d1d;
+      --ring-mid: #ffffff;
+      --ring-third: #ff8c5a;
+      --bar-off: #1b1b1b;
+    }
+
+    html[data-theme="volt"] {
+      --bg: #000000;
+      --surface: #0e0e0e;
+      --surface-2: #151515;
+      --border: #212121;
+      --border-strong: #363636;
+      --text: #f8f8f8;
+      --muted: #868686;
+      --accent: #ceff00;
+      --accent-rgb: 206, 255, 0;
+      --accent-text: #000000;
+      --active-card-bg: #121608;
+      --active-card-text: #ffffff;
+      --active-card-muted: #bcd07a;
+      --active-card-border: #ceff00;
+      --ring-track: #1c1c1c;
+      --ring-mid: #ffffff;
+      --ring-third: #97bf00;
+      --bar-off: #191919;
+    }
+
+    html[data-theme="nothing"] {
+      --bg: #060606;
+      --surface: #101010;
+      --surface-2: #171717;
+      --border: #232323;
+      --border-strong: #3a3a3a;
+      --text: #f5f5f5;
+      --muted: #858585;
+      --accent: #d71921;
+      --accent-rgb: 215, 25, 33;
+      --accent-text: #ffffff;
+      --active-card-bg: #ffffff;
+      --active-card-text: #060606;
+      --active-card-muted: #4a4a4a;
+      --active-card-border: #ffffff;
+      --ring-track: #1f1f1f;
+      --ring-mid: #ffffff;
+      --ring-third: #8a8a8a;
+      --bar-off: #1c1c1c;
+    }
+
+    * {
+      box-sizing: border-box;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    body {
+      margin: 0;
+      background-color: var(--bg);
+      background-image: radial-gradient(rgba(255, 255, 255, 0.045) 1px, transparent 1px);
+      background-size: 18px 18px;
+      color: var(--text);
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      min-height: 100vh;
+      overflow-x: hidden;
+      transition: background-color 0.2s ease, color 0.2s ease;
+    }
+
+    .font-nothing {
+      font-family: 'Doto', 'JetBrains Mono', monospace;
+      font-variation-settings: "ROND" 100;
+      letter-spacing: 0.04em;
+    }
+
+    .font-nike-num {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-weight: 900;
+      font-style: italic;
+      font-variant-numeric: tabular-nums;
+      letter-spacing: -0.03em;
+    }
+
+    .font-nike {
+      font-family: 'Barlow Condensed', sans-serif;
+      letter-spacing: -0.015em;
+    }
+
+    .font-tech {
+      font-family: 'JetBrains Mono', monospace;
+      letter-spacing: 0.11em;
+    }
+
+    .card-shell {
+      background-color: var(--surface);
+      border: 1px solid var(--border);
+      transition: border-color 0.18s ease, background-color 0.18s ease;
+    }
+
+    .pill-choice {
+      color: var(--muted);
+      transition: all 0.15s ease;
+    }
+
+    .pill-choice.is-active {
+      background-color: var(--accent);
+      color: var(--accent-text);
+    }
+
+    html[data-theme="nothing"] .pill-choice.is-active {
+      background-color: #ffffff;
+      color: #060606;
+    }
+
+    .slot-chip {
+      background-color: var(--bg);
+      border: 1px solid var(--border);
+      color: var(--muted);
+      transition: all 0.15s ease;
+    }
+
+    .slot-chip:hover {
+      border-color: var(--border-strong);
+      color: var(--text);
+    }
+
+    .slot-chip.is-active {
+      background-color: var(--text);
+      border-color: var(--text);
+      color: var(--bg);
+      font-weight: 600;
+    }
+
+    html[data-theme="volt"] .slot-chip.is-active {
+      background-color: var(--accent);
+      border-color: var(--accent);
+      color: #000000;
+    }
+
+    .behavior-card {
+      background-color: var(--bg);
+      border: 1px solid var(--border);
+      color: var(--muted);
+      transition: all 0.16s ease;
+    }
+
+    .behavior-card:hover {
+      border-color: var(--border-strong);
+      color: var(--text);
+    }
+
+    .behavior-card.is-selected {
+      border-color: var(--accent);
+      background-color: rgba(var(--accent-rgb), 0.1);
+      color: var(--text);
+    }
+
+    .resource-card {
+      background-color: var(--surface);
+      border: 1px solid var(--border);
+      color: var(--text);
+      transition: all 0.18s ease;
+    }
+
+    .resource-card:hover {
+      border-color: var(--border-strong);
+    }
+
+    .resource-card.is-active {
+      background-color: var(--active-card-bg);
+      border-color: var(--active-card-border);
+      color: var(--active-card-text);
+    }
+
+    .resource-card.is-active .res-desc {
+      color: var(--active-card-muted);
+    }
+
+    .resource-card.is-active .res-num {
+      color: var(--active-card-text);
+      opacity: 0.55;
+    }
+
+    .resource-card.is-suggested:not(.is-active) {
+      border-color: rgba(var(--accent-rgb), 0.55);
+    }
+
+    .tag-pill {
+      background-color: var(--surface-2);
+      border: 1px solid var(--border);
+      color: var(--muted);
+      transition: all 0.15s ease;
+    }
+
+    .tag-pill:hover {
+      border-color: var(--border-strong);
+      color: var(--text);
+    }
+
+    .tag-pill.is-selected {
+      background-color: var(--accent);
+      border-color: var(--accent);
+      color: var(--accent-text);
+      font-weight: 600;
+    }
+
+    html[data-theme="nothing"] .tag-pill.is-selected {
+      background-color: #ffffff;
+      border-color: #ffffff;
+      color: #060606;
+    }
+
+    .cta-btn {
+      background-color: var(--accent);
+      color: var(--accent-text);
+      transition: transform 0.12s ease, opacity 0.15s ease;
+    }
+
+    .cta-btn:active {
+      transform: scale(0.985);
+    }
+
+    .live-dot {
+      width: 9px;
+      height: 9px;
+      border-radius: 9999px;
+      background-color: var(--accent);
+      box-shadow: 0 0 0 0 rgba(var(--accent-rgb), 0.65);
+      animation: pulseRing 2s infinite;
+    }
+
+    @keyframes pulseRing {
+      0% { box-shadow: 0 0 0 0 rgba(var(--accent-rgb), 0.65); }
+      70% { box-shadow: 0 0 0 9px rgba(var(--accent-rgb), 0); }
+      100% { box-shadow: 0 0 0 0 rgba(var(--accent-rgb), 0); }
+    }
+
+    @keyframes spinReel {
+      from { transform: rotate(0deg); }
+      to { transform: rotate(360deg); }
+    }
+
+    .reel-spin {
+      animation: spinReel 2.4s linear infinite;
+    }
+
+    @keyframes orbitDot {
+      from { transform: rotate(0deg); }
+      to { transform: rotate(360deg); }
+    }
+
+    .orbit-g {
+      transform-origin: 50px 50px;
+      animation: orbitDot 7s linear infinite;
+    }
+
+    @keyframes rippleWave {
+      0% { transform: scale(0.84); opacity: 0.65; }
+      100% { transform: scale(1.18); opacity: 0; }
+    }
+
+    .sonar-ripple {
+      transform-origin: center;
+      animation: rippleWave 1.6s cubic-bezier(0.16, 1, 0.3, 1) infinite;
+    }
+
+    .ring-arc {
+      transition: stroke-dashoffset 0.25s cubic-bezier(0.22, 1, 0.36, 1), stroke 0.2s ease;
+    }
+
+    .seg-bar {
+      height: 15px;
+      border-radius: 2px;
+      background-color: var(--bar-off);
+      transition: background-color 0.08s linear;
+    }
+
+    .seg-bar.on-base {
+      background-color: rgba(245, 245, 245, 0.78);
+    }
+
+    .seg-bar.on-hot {
+      background-color: var(--accent);
+    }
+
+    .aud-fill {
+      transition: width 0.3s cubic-bezier(0.22, 1, 0.36, 1);
+    }
+
+    ::-webkit-scrollbar {
+      width: 5px;
+      height: 5px;
+    }
+    ::-webkit-scrollbar-track {
+      background: var(--bg);
+    }
+    ::-webkit-scrollbar-thumb {
+      background: var(--border-strong);
+      border-radius: 9999px;
+    }
+  </style>
+</head>
+<body class="antialiased selection:bg-white selection:text-black">
+  <div class="max-w-[1340px] mx-auto px-4 sm:px-6 lg:px-8 py-4 sm:py-5 flex flex-col min-h-screen gap-4">
+
+    <!-- FLAGSHIP HEADER: FULL "BELLAS ARTES LAB" IN LARGE NOTHING DOT-MATRIX -->
+    <header class="flex flex-wrap items-center justify-between gap-3 pb-3.5 border-b border-[var(--border)]">
+      <div class="flex items-center gap-3.5">
+        <span class="live-dot shrink-0" aria-hidden="true"></span>
+        <span class="font-nothing font-extrabold text-2xl sm:text-[32px] leading-none uppercase text-[var(--text)]">BELLAS ARTES LAB</span>
+        <span class="text-[var(--border-strong)] hidden sm:inline">/</span>
+        <span id="headerRoundBadge" class="font-tech text-[10px] text-[var(--muted)] uppercase">RONDA 01</span>
+        <span id="sessionClock" class="hidden md:inline-block font-tech text-[10px] text-[var(--muted)] px-2.5 py-0.5 rounded-full border border-[var(--border)]">00:00</span>
+      </div>
+
+      <div class="flex items-center gap-2">
+        <div class="inline-flex items-center rounded-full p-0.5 border border-[var(--border)] bg-[var(--surface)]" role="group" aria-label="Paleta visual">
+          <button id="btnThemeOrange" type="button" class="font-tech text-[10px] font-semibold px-3 py-1 rounded-full transition-colors bg-[#ff4500] text-white">ORANGE</button>
+          <button id="btnThemeVolt" type="button" class="font-tech text-[10px] font-semibold px-3 py-1 rounded-full transition-colors text-[var(--muted)]">VOLT</button>
+          <button id="btnThemeNothing" type="button" class="font-tech text-[10px] font-semibold px-3 py-1 rounded-full transition-colors text-[var(--muted)]">RED</button>
+        </div>
+
+        <button id="btnOpenLog" type="button" class="font-tech text-[10px] font-semibold px-3.5 py-1.5 rounded-full border border-[var(--border)] bg-[var(--surface)] hover:border-[var(--border-strong)] text-[var(--text)] flex items-center gap-2 transition-colors">
+          <span>BITÁCORA</span>
+          <span id="logCountBadge" class="inline-flex items-center justify-center min-w-[20px] h-5 px-1.5 rounded-full text-[10px] font-bold bg-[var(--accent)] text-[var(--accent-text)]">0</span>
+        </button>
+      </div>
+    </header>
+
+    <!-- MAIN IPAD 2-COLUMN / MOBILE 1-COLUMN WORKSPACE -->
+    <main class="grid grid-cols-1 lg:grid-cols-12 gap-4 lg:gap-5 flex-1 items-start">
+
+      <!-- LEFT COLUMN (5 cols): LIVE SONAR & TAPE + AFORO WITH 3 INDEPENDENT 0-100 CIRCLES BELOW -->
+      <section class="lg:col-span-5 flex flex-col gap-4">
+
+        <!-- MODULE 1: LIVE ACOUSTIC SONAR + ROLLING TAPE -->
+        <div class="card-shell rounded-2xl p-4 sm:p-5 flex flex-col gap-4">
+          <div class="flex flex-wrap items-center justify-between gap-2">
+            <div class="flex items-center gap-2">
+              <svg id="tapeReelSvg" class="w-4 h-4 text-[var(--accent)]" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                <circle cx="12" cy="12" r="9.5" stroke="currentColor" stroke-width="1.6" stroke-dasharray="2.2 2.6" />
+                <circle cx="12" cy="12" r="2.2" fill="currentColor" />
+                <line x1="12" y1="3" x2="12" y2="7" stroke="currentColor" stroke-width="1.6" />
+                <line x1="12" y1="17" x2="12" y2="21" stroke="currentColor" stroke-width="1.6" />
+              </svg>
+              <span id="sonarHeaderStatus" class="font-tech text-[10px] uppercase text-[var(--muted)]">SONAR ACÚSTICO · LISTO</span>
+            </div>
+
+            <div class="flex items-center gap-1.5">
+              <button id="btnMicToggle" type="button" class="font-tech text-[10px] font-semibold px-3 py-1 rounded-full border border-[var(--border)] bg-[var(--bg)] hover:border-[var(--text)] text-[var(--text)] transition-colors cursor-pointer">
+                MIC: OFF
+              </button>
+              <button id="btnRecTape" type="button" class="cta-btn font-tech text-[10px] font-bold px-3.5 py-1 rounded-full flex items-center gap-1.5 cursor-pointer">
+                <span class="w-1.5 h-1.5 rounded-full bg-current"></span>
+                <span id="recBtnText">GRABAR</span>
+              </button>
+            </div>
+          </div>
+
+          <!-- Monumental Apple Watch Nike Slanted dB Readout -->
+          <div class="flex items-end justify-between gap-4">
+            <div class="flex items-baseline gap-2">
+              <span id="dbLiveValue" class="font-nike-num text-[80px] sm:text-[96px] leading-[0.8] text-[var(--text)] pr-1">42</span>
+              <span class="font-nike-num text-3xl text-[var(--accent)]">dB</span>
+            </div>
+
+            <div class="flex items-center gap-4 text-right pb-1">
+              <div>
+                <span class="font-tech text-[8px] text-[var(--muted)] block">PICO</span>
+                <span id="dbPeakValue" class="font-nike-num text-3xl leading-none text-[var(--accent)]">42</span>
+              </div>
+              <div class="h-7 w-px bg-[var(--border)]"></div>
+              <div>
+                <span class="font-tech text-[8px] text-[var(--muted)] block">CINTA</span>
+                <span id="tapeTimecode" class="font-tech text-xs font-semibold tabular-nums text-[var(--text)]">00:00.0</span>
+              </div>
+              <div class="h-7 w-px bg-[var(--border)]"></div>
+              <div>
+                <span class="font-tech text-[8px] text-[var(--muted)] block">RESPUESTA</span>
+                <span id="bandLabel" class="font-tech text-[10px] text-[var(--text)]">AMBIENTE</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Clean 20-Segment Intensity Bar (0 - 100) -->
+          <div>
+            <div id="sonarSegments" class="grid gap-1" style="grid-template-columns: repeat(20, minmax(0, 1fr));" aria-label="Intensidad sonora de 0 a 100"></div>
+            <div class="flex justify-between mt-1 font-tech text-[8px] text-[var(--muted)]">
+              <span>0</span>
+              <span>50 · ACTIVO</span>
+              <span>75 · IMPACTO</span>
+              <span>100</span>
+            </div>
+          </div>
+
+          <!-- Rolling Tape Canvas -->
+          <div class="rounded-xl bg-[var(--bg)] border border-[var(--border)] p-2 flex flex-col gap-2">
+            <div class="relative w-full h-[68px] overflow-hidden rounded-lg bg-[#040404]">
+              <canvas id="tapeCanvas" class="w-full h-full block"></canvas>
+            </div>
+            <div class="flex flex-wrap items-center justify-between gap-1.5 px-0.5">
+              <span id="tapeSubStatus" class="font-tech text-[9px] text-[var(--muted)]">MODO EN VIVO · PULSA GRABAR O IMPACTO</span>
+              <div class="flex items-center gap-1.5">
+                <button id="btnMarkEvent" type="button" class="font-tech text-[9px] px-2.5 py-1 rounded-full border border-[var(--border)] text-[var(--text)] hover:border-[var(--accent)] transition-colors">
+                  + MARCAR
+                </button>
+                <button id="btnSimSpike" type="button" class="font-tech text-[9px] px-2.5 py-1 rounded-full border border-[var(--border)] text-[var(--muted)] hover:text-[var(--text)] transition-colors">
+                  IMPACTO
+                </button>
+                <button id="btnResetPeak" type="button" class="font-tech text-[9px] px-2.5 py-1 rounded-full border border-[var(--border)] text-[var(--muted)] hover:text-[var(--text)] transition-colors">
+                  RESET
+                </button>
+              </div>
+            </div>
+          </div>
+          <p id="micStatusNote" class="hidden text-[11px] text-[var(--muted)] leading-snug"></p>
+        </div>
+
+        <!-- MODULE 2: AFORO EN PLAZA + 3 SEPARATE 0-100 APPLE WATCH NIKE CYCLES -->
+        <div class="card-shell rounded-2xl p-4 sm:p-5 flex flex-col gap-4">
+          <div class="flex items-end justify-between gap-3">
+            <div>
+              <span class="font-tech text-[10px] uppercase text-[var(--accent)] block mb-1">AFORO EN PLAZA</span>
+              <div class="flex items-baseline gap-2.5">
+                <span id="aforoPeopleVal" class="font-nike-num text-6xl leading-[0.82] text-[var(--text)] pr-1">170</span>
+                <span class="font-tech text-[10px] text-[var(--muted)] uppercase">ASISTENTES EST.</span>
+              </div>
+            </div>
+            <div class="text-right">
+              <span id="aforoRangeTag" class="font-tech text-[10px] text-[var(--text)] block">140 – 200 PERS.</span>
+              <span id="aforoRingTag" class="font-tech text-[9px] text-[var(--muted)] block mt-0.5">3–4 ANILLOS · N4</span>
+            </div>
+          </div>
+
+          <div class="grid grid-cols-4 gap-1.5 p-1 rounded-full bg-[var(--bg)] border border-[var(--border)]" role="radiogroup" aria-label="Selector de aforo">
+            <button type="button" class="pill-choice font-nike-num text-xl py-1.5 rounded-full" data-aforo="25">1/4</button>
+            <button type="button" class="pill-choice font-nike-num text-xl py-1.5 rounded-full" data-aforo="50">1/2</button>
+            <button type="button" class="pill-choice is-active font-nike-num text-xl py-1.5 rounded-full" data-aforo="75">3/4</button>
+            <button type="button" class="pill-choice font-nike-num text-xl py-1.5 rounded-full" data-aforo="100">LLENO</button>
+          </div>
+
+          <!-- 3 SEPARATE 0-100 LIVE CYCLES (SONAR / AFORO / REACCIÓN DE PLAZA) -->
+          <div class="grid grid-cols-3 gap-2.5 pt-1">
+            <!-- Cycle 1: Live Sonar Energy (0-100) -->
+            <div class="rounded-2xl bg-[var(--bg)] border border-[var(--border)] p-3 flex flex-col items-center justify-center text-center relative overflow-hidden">
+              <div id="sonarRippleEl" class="absolute inset-3 rounded-full border border-[var(--accent)] opacity-0 pointer-events-none"></div>
+              <div class="relative w-20 h-20 sm:w-24 sm:h-24 flex items-center justify-center">
+                <svg class="w-full h-full" viewBox="0 0 100 100" aria-hidden="true">
+                  <circle cx="50" cy="50" r="41" fill="none" stroke="var(--ring-track)" stroke-width="7.5" />
+                  <g transform="rotate(-90 50 50)">
+                    <circle id="sonarRingArc" class="ring-arc" cx="50" cy="50" r="41" fill="none" stroke="var(--accent)" stroke-width="7.5" stroke-linecap="round" stroke-dasharray="257.61" stroke-dashoffset="226" />
+                  </g>
+                  <g class="orbit-g">
+                    <circle cx="50" cy="9" r="2.4" fill="var(--accent)" />
+                  </g>
+                </svg>
+                <div class="absolute inset-0 flex flex-col items-center justify-center">
+                  <span id="scoreLiveValue" class="font-nike-num text-3xl sm:text-4xl leading-none text-[var(--text)]">12</span>
+                  <span class="font-tech text-[7px] text-[var(--muted)] mt-0.5">/ 100</span>
+                </div>
+              </div>
+              <span class="font-tech text-[9px] text-[var(--text)] mt-1.5">SONAR</span>
+            </div>
+
+            <!-- Cycle 2: Aforo Density (0-100) -->
+            <div class="rounded-2xl bg-[var(--bg)] border border-[var(--border)] p-3 flex flex-col items-center justify-center text-center">
+              <div class="relative w-20 h-20 sm:w-24 sm:h-24 flex items-center justify-center">
+                <svg class="w-full h-full -rotate-90" viewBox="0 0 100 100" aria-hidden="true">
+                  <circle cx="50" cy="50" r="41" fill="none" stroke="var(--ring-track)" stroke-width="7.5" />
+                  <circle id="aforoCycleArc" class="ring-arc" cx="50" cy="50" r="41" fill="none" stroke="var(--ring-mid)" stroke-width="7.5" stroke-linecap="round" stroke-dasharray="257.61" stroke-dashoffset="64.4" />
+                </svg>
+                <div class="absolute inset-0 flex flex-col items-center justify-center">
+                  <span id="aforoCycleVal" class="font-nike-num text-3xl sm:text-4xl leading-none text-[var(--text)]">75</span>
+                  <span class="font-tech text-[7px] text-[var(--muted)] mt-0.5">/ 100</span>
+                </div>
+              </div>
+              <span class="font-tech text-[9px] text-[var(--text)] mt-1.5">AFORO</span>
+            </div>
+
+            <!-- Cycle 3: Plaza Reaction / Retention Index (0-100, responds to Sonar + Aforo + Horario) -->
+            <div class="rounded-2xl bg-[var(--bg)] border border-[var(--border)] p-3 flex flex-col items-center justify-center text-center">
+              <div class="relative w-20 h-20 sm:w-24 sm:h-24 flex items-center justify-center">
+                <svg class="w-full h-full -rotate-90" viewBox="0 0 100 100" aria-hidden="true">
+                  <circle cx="50" cy="50" r="41" fill="none" stroke="var(--ring-track)" stroke-width="7.5" />
+                  <circle id="reactionCycleArc" class="ring-arc" cx="50" cy="50" r="41" fill="none" stroke="var(--ring-third)" stroke-width="7.5" stroke-linecap="round" stroke-dasharray="257.61" stroke-dashoffset="120" />
+                </svg>
+                <div class="absolute inset-0 flex flex-col items-center justify-center">
+                  <span id="reactionCycleVal" class="font-nike-num text-3xl sm:text-4xl leading-none text-[var(--text)]">54</span>
+                  <span class="font-tech text-[7px] text-[var(--muted)] mt-0.5">/ 100</span>
+                </div>
+              </div>
+              <span class="font-tech text-[9px] text-[var(--text)] mt-1.5">REACCIÓN</span>
+            </div>
+          </div>
+
+          <p id="aforoDynamicsText" class="text-xs text-[var(--muted)] leading-relaxed">
+            Círculo compacto con energía alta y reacción grupal rápida: el entorno exige claridad vocal y manejo consciente del ritmo ante ovaciones fuertes.
+          </p>
+        </div>
+
+      </section>
+
+      <!-- RIGHT COLUMN (7 cols): ENTORNO BELLAS ARTES + COMPORTAMIENTO + RECURSOS + REGISTRO -->
+      <section class="lg:col-span-7 flex flex-col gap-4">
+
+        <!-- MODULE 3: ENTORNO Y PERFIL DE AUDIENCIA BELLAS ARTES -->
+        <div class="card-shell rounded-2xl p-4 sm:p-5 flex flex-col gap-4">
+          <div class="flex flex-wrap items-center justify-between gap-2">
+            <div>
+              <span class="font-tech text-[10px] uppercase text-[var(--accent)] block">ENTORNO BELLAS ARTES · ALAMEDA CENTRAL</span>
+              <h1 class="font-nike font-black uppercase text-2xl sm:text-3xl leading-none text-[var(--text)] mt-1">
+                PERFIL DE AUDIENCIA POR HORARIO
+              </h1>
+            </div>
+            <div class="flex flex-wrap gap-1.5" role="radiogroup" aria-label="Horario de plaza">
+              <button type="button" class="slot-chip font-tech text-[9px] px-3 py-1.5 rounded-full uppercase" data-slot="tarde">15–17H</button>
+              <button type="button" class="slot-chip is-active font-tech text-[9px] px-3 py-1.5 rounded-full uppercase" data-slot="pico">17–20H PICO</button>
+              <button type="button" class="slot-chip font-tech text-[9px] px-3 py-1.5 rounded-full uppercase" data-slot="noche">20–22H</button>
+              <button type="button" class="slot-chip font-tech text-[9px] px-3 py-1.5 rounded-full uppercase" data-slot="finde">FIN DE SEMANA</button>
+            </div>
+          </div>
+
+          <!-- 4 Clean Audience Bars -->
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-x-6 gap-y-2.5">
+            <div>
+              <div class="flex justify-between font-tech text-[9px] mb-1">
+                <span class="text-[var(--text)]">PÚBLICO DE TRÁNSITO · METRO</span>
+                <span id="pctTransit" class="text-[var(--accent)] font-semibold">35%</span>
+              </div>
+              <div class="h-1.5 rounded-full bg-[var(--bg)] overflow-hidden">
+                <div id="barTransit" class="aud-fill h-full rounded-full bg-[var(--accent)]" style="width: 35%;"></div>
+              </div>
+            </div>
+
+            <div>
+              <div class="flex justify-between font-tech text-[9px] mb-1">
+                <span class="text-[var(--text)]">COMUNIDAD FREESTYLE</span>
+                <span id="pctCommunity" class="text-[var(--text)] font-semibold">30%</span>
+              </div>
+              <div class="h-1.5 rounded-full bg-[var(--bg)] overflow-hidden">
+                <div id="barCommunity" class="aud-fill h-full rounded-full bg-white" style="width: 30%;"></div>
+              </div>
+            </div>
+
+            <div>
+              <div class="flex justify-between font-tech text-[9px] mb-1">
+                <span class="text-[var(--muted)]">FAMILIAS Y PASEO ALAMEDA</span>
+                <span id="pctFamilies" class="text-[var(--muted)] font-semibold">20%</span>
+              </div>
+              <div class="h-1.5 rounded-full bg-[var(--bg)] overflow-hidden">
+                <div id="barFamilies" class="aud-fill h-full rounded-full bg-[#999999]" style="width: 20%;"></div>
+              </div>
+            </div>
+
+            <div>
+              <div class="flex justify-between font-tech text-[9px] mb-1">
+                <span class="text-[var(--muted)]">TURISMO CORREDOR MADERO</span>
+                <span id="pctTourists" class="text-[var(--muted)] font-semibold">15%</span>
+              </div>
+              <div class="h-1.5 rounded-full bg-[var(--bg)] overflow-hidden">
+                <div id="barTourists" class="aud-fill h-full rounded-full bg-[#5a5a5a]" style="width: 15%;"></div>
+              </div>
+            </div>
+          </div>
+
+          <p id="slotPropensityText" class="text-xs text-[var(--muted)] leading-relaxed bg-[var(--bg)] border border-[var(--border)] rounded-xl px-3.5 py-2.5">
+            Flujo alto saliendo de Metro Bellas Artes y calle Madero: audiencia abierta al descubrimiento que responde con rapidez al carisma, la claridad y referencias visibles del entorno.
+          </p>
+
+          <!-- Verified Venue Context Facts with Nike Numerals -->
+          <div class="grid grid-cols-2 sm:grid-cols-4 gap-2 pt-1">
+            <a href="https://www.eluniversal.com.mx/metropoli/puestos-ambulantes-como-ha-sido-la-lucha-por-el-espacio-de-la-alameda-central/" target="_blank" rel="noopener noreferrer" class="rounded-xl bg-[var(--bg)] border border-[var(--border)] hover:border-[var(--border-strong)] px-3 py-2.5 block transition-colors">
+              <span class="font-nike-num text-2xl sm:text-3xl leading-none text-[var(--text)] block">90,000 m²</span>
+              <span class="font-tech text-[8px] text-[var(--muted)] block mt-1">ALAMEDA (1592) ↗</span>
+            </a>
+            <a href="https://www.caminandoplaciudad.xyz/2025/04/los-museos-mas-visitados-de-2024-de-la-cdmx.html" target="_blank" rel="noopener noreferrer" class="rounded-xl bg-[var(--bg)] border border-[var(--border)] hover:border-[var(--border-strong)] px-3 py-2.5 block transition-colors">
+              <span class="font-nike-num text-2xl sm:text-3xl leading-none text-[var(--text)] block">1.63M</span>
+              <span class="font-tech text-[8px] text-[var(--muted)] block mt-1">VISITAS PBA 2024 ↗</span>
+            </a>
+            <a href="https://www.nomadotravel.app/es/places/centro-historico" target="_blank" rel="noopener noreferrer" class="rounded-xl bg-[var(--bg)] border border-[var(--border)] hover:border-[var(--border-strong)] px-3 py-2.5 block transition-colors">
+              <span class="font-nike-num text-2xl sm:text-3xl leading-none text-[var(--text)] block">1.3 KM</span>
+              <span class="font-tech text-[8px] text-[var(--muted)] block mt-1">CORREDOR MADERO ↗</span>
+            </a>
+            <a href="https://oem.com.mx/elsoldemexico/cultura/de-la-plaza-al-escenario-22128112" target="_blank" rel="noopener noreferrer" class="rounded-xl bg-[var(--bg)] border border-[var(--border)] hover:border-[var(--border-strong)] px-3 py-2.5 block transition-colors">
+              <span class="font-nike-num text-2xl sm:text-3xl leading-none text-[var(--text)] block">+15 AÑOS</span>
+              <span class="font-tech text-[8px] text-[var(--muted)] block mt-1">L–V 15–22H · S–D ↗</span>
+            </a>
+          </div>
+        </div>
+
+        <!-- MODULE 4: COMPORTAMIENTO OBSERVADO & RECURSOS DE ENFOQUE (MC) -->
+        <div class="card-shell rounded-2xl p-4 sm:p-5 flex flex-col gap-4">
+          <div class="flex flex-wrap items-center justify-between gap-2">
+            <div>
+              <span class="font-tech text-[10px] uppercase text-[var(--accent)] block">RENDIMIENTO DEL MC · PRÁCTICA DE CAMPO</span>
+              <h2 class="font-nike font-black uppercase text-2xl leading-none text-[var(--text)] mt-1">
+                COMPORTAMIENTO Y RECURSOS DE EXPRESIÓN
+              </h2>
+            </div>
+
+            <button id="btnPauseTimer" type="button" class="rounded-full border border-[var(--border)] bg-[var(--bg)] hover:border-[var(--accent)] px-3.5 py-1.5 flex items-center gap-2 transition-colors cursor-pointer">
+              <span class="w-2 h-2 rounded-full bg-[var(--accent)]"></span>
+              <span class="font-tech text-[10px] text-[var(--text)]">PAUSA ACTIVA:</span>
+              <span id="pauseTimerText" class="font-nike-num text-xl leading-none text-[var(--accent)] pr-0.5">2.0S</span>
+            </button>
+          </div>
+
+          <!-- 4 Respectful Behavioral Patterns -->
+          <div class="grid grid-cols-2 sm:grid-cols-4 gap-2" id="behaviorGrid">
+            <button type="button" class="behavior-card is-selected rounded-xl p-2.5 text-left" data-behavior="ACELERACION" data-suggest="01">
+              <span class="font-nike font-extrabold uppercase text-base leading-none block">ACELERACIÓN</span>
+              <span class="text-[11px] opacity-75 leading-tight block mt-1">Subida de ritmo sobre el pico sonoro</span>
+            </button>
+            <button type="button" class="behavior-card rounded-xl p-2.5 text-left" data-behavior="TENSION_ESCENICA" data-suggest="02">
+              <span class="font-nike font-extrabold uppercase text-base leading-none block">PRESIÓN AMBIENTAL</span>
+              <span class="text-[11px] opacity-75 leading-tight block mt-1">Cierre del círculo tras ovación fuerte</span>
+            </button>
+            <button type="button" class="behavior-card rounded-xl p-2.5 text-left" data-behavior="SATURACION" data-suggest="03">
+              <span class="font-nike font-extrabold uppercase text-base leading-none block">SATURACIÓN</span>
+              <span class="text-[11px] opacity-75 leading-tight block mt-1">Múltiples estímulos entre plaza y beat</span>
+            </button>
+            <button type="button" class="behavior-card rounded-xl p-2.5 text-left" data-behavior="PAUSA_PROCESO" data-suggest="04">
+              <span class="font-nike font-extrabold uppercase text-base leading-none block">PAUSA DE PROCESO</span>
+              <span class="text-[11px] opacity-75 leading-tight block mt-1">Ventana breve para ordenar argumento</span>
+            </button>
+          </div>
+
+          <!-- 4 Expression & Focus Resources (2x2) -->
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5" id="resourceGrid">
+            <button type="button" class="resource-card is-active rounded-2xl p-3.5 text-left flex flex-col justify-between gap-1.5" data-resource="01">
+              <div class="flex items-center justify-between w-full">
+                <span class="res-num font-nike-num text-lg leading-none">01</span>
+                <span class="res-badge font-tech text-[9px] uppercase opacity-70">REGULACIÓN</span>
+              </div>
+              <h3 class="font-nike font-black uppercase text-2xl leading-none">PAUSA ACTIVA</h3>
+              <p class="res-desc text-xs leading-snug">Dejar correr el pico de ovación, respirar breve y entrar al bajar el ruido proyecta seguridad y control.</p>
+            </button>
+
+            <button type="button" class="resource-card rounded-2xl p-3.5 text-left flex flex-col justify-between gap-1.5" data-resource="02">
+              <div class="flex items-center justify-between w-full">
+                <span class="res-num font-nike-num text-lg leading-none text-[var(--muted)]">02</span>
+                <span class="res-badge font-tech text-[9px] uppercase opacity-70">PRESENCIA</span>
+              </div>
+              <h3 class="font-nike font-black uppercase text-2xl leading-none">LECTURA DE ENTORNO</h3>
+              <p class="res-desc text-xs text-[var(--muted)] leading-snug">Integrar la energía del público en lugar de competir contra ella convierte la presión en impulso escénico.</p>
+            </button>
+
+            <button type="button" class="resource-card rounded-2xl p-3.5 text-left flex flex-col justify-between gap-1.5" data-resource="03">
+              <div class="flex items-center justify-between w-full">
+                <span class="res-num font-nike-num text-lg leading-none text-[var(--muted)]">03</span>
+                <span class="res-badge font-tech text-[9px] uppercase opacity-70">ENFOQUE</span>
+              </div>
+              <h3 class="font-nike font-black uppercase text-2xl leading-none">UNA SOLA IDEA</h3>
+              <p class="res-desc text-xs text-[var(--muted)] leading-snug">Elegir un único concepto o referencia visible de la plaza para sostener claridad y coherencia de principio a fin.</p>
+            </button>
+
+            <button type="button" class="resource-card rounded-2xl p-3.5 text-left flex flex-col justify-between gap-1.5" data-resource="04">
+              <div class="flex items-center justify-between w-full">
+                <span class="res-num font-nike-num text-lg leading-none text-[var(--muted)]">04</span>
+                <span class="res-badge font-tech text-[9px] uppercase opacity-70">ESTRUCTURA</span>
+              </div>
+              <h3 class="font-nike font-black uppercase text-2xl leading-none">CONSTRUCCIÓN PROGRESIVA</h3>
+              <p class="res-desc text-xs text-[var(--muted)] leading-snug">Abrir con claridad en el primer compás y escalar la intención de la idea hacia el cierre del patrón.</p>
+            </button>
+          </div>
+
+          <!-- Clean Field Recording Bar -->
+          <div class="pt-3 border-t border-[var(--border)] flex flex-col gap-3">
+            <div class="flex flex-wrap gap-1.5" id="outcomeTags">
+              <button type="button" class="tag-pill font-tech text-[10px] px-3 py-1 rounded-full uppercase" data-tag="PAUSA ACTIVA">PAUSA ACTIVA</button>
+              <button type="button" class="tag-pill font-tech text-[10px] px-3 py-1 rounded-full uppercase" data-tag="CLARIDAD">CLARIDAD</button>
+              <button type="button" class="tag-pill font-tech text-[10px] px-3 py-1 rounded-full uppercase" data-tag="PROYECCIÓN">PROYECCIÓN</button>
+              <button type="button" class="tag-pill font-tech text-[10px] px-3 py-1 rounded-full uppercase" data-tag="FLUIDEZ">FLUIDEZ</button>
+              <button type="button" class="tag-pill font-tech text-[10px] px-3 py-1 rounded-full uppercase" data-tag="LECTURA DE PLAZA">LECTURA DE PLAZA</button>
+              <button type="button" class="tag-pill font-tech text-[10px] px-3 py-1 rounded-full uppercase" data-tag="CONTROL">CONTROL</button>
+            </div>
+
+            <div class="flex flex-col sm:flex-row gap-2.5 items-stretch sm:items-center">
+              <input
+                id="fieldNoteInput"
+                type="text"
+                maxlength="180"
+                placeholder="Observación de práctica (ej. con 3/4 de aforo la pausa breve mejoró la claridad)..."
+                class="flex-1 rounded-full bg-[var(--bg)] border border-[var(--border)] focus:border-[var(--text)] focus:outline-none px-4 py-2.5 text-sm text-[var(--text)] placeholder:text-[var(--muted)]"
+              />
+              <button id="btnSaveRound" type="button" class="cta-btn font-nike font-extrabold uppercase text-xl tracking-wide px-6 py-2 rounded-full shrink-0 flex items-center justify-center gap-2 cursor-pointer">
+                <span>GUARDAR RONDA</span>
+                <span aria-hidden="true">→</span>
+              </button>
+            </div>
+          </div>
+        </div>
+
+      </section>
+    </main>
+  </div>
+
+  <!-- SESSION LOG DRAWER MODAL -->
+  <div id="logModal" class="fixed inset-0 z-50 hidden bg-black/80 backdrop-blur-sm flex justify-end">
+    <div class="w-full max-w-md bg-[var(--surface)] border-l border-[var(--border)] h-full flex flex-col p-5 gap-4">
+      <div class="flex items-center justify-between pb-3 border-b border-[var(--border)]">
+        <div>
+          <p class="font-tech text-[10px] uppercase text-[var(--accent)]">REGISTRO DE CAMPO</p>
+          <h2 class="font-nike font-black uppercase text-2xl text-[var(--text)]">BITÁCORA DE SESIÓN</h2>
+        </div>
+        <button id="btnCloseLog" type="button" class="font-tech text-[10px] px-3 py-1.5 rounded-full border border-[var(--border)] text-[var(--muted)] hover:text-[var(--text)]">
+          CERRAR ✕
+        </button>
+      </div>
+
+      <div id="logList" class="flex-1 overflow-y-auto flex flex-col gap-3 pr-1"></div>
+
+      <div class="pt-3 border-t border-[var(--border)] flex flex-wrap items-center gap-2">
+        <button id="btnCopyLog" type="button" class="flex-1 font-tech text-[10px] font-semibold py-2.5 px-3 rounded-full border border-[var(--border)] bg-[var(--bg)] hover:border-[var(--text)] text-[var(--text)]">
+          COPIAR
+        </button>
+        <button id="btnDownloadLog" type="button" class="flex-1 cta-btn font-tech text-[10px] font-bold py-2.5 px-3 rounded-full">
+          EXPORTAR .TXT
+        </button>
+        <button id="btnClearLog" type="button" class="w-full font-tech text-[10px] py-2 rounded-full text-[var(--muted)] hover:text-red-400 transition-colors">
+          LIMPIAR SESIÓN
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- IN-PAGE TOAST -->
+  <div id="toast" class="fixed bottom-6 left-1/2 -translate-x-1/2 z-50 pointer-events-none opacity-0 transition-opacity duration-200 px-4 py-2 rounded-full bg-white text-black font-tech text-[10px] font-bold shadow-lg">
+    REGISTRADO
+  </div>
+
+  <script>
+    (function () {
+      const STORAGE_KEY = 'bellas_artes_perf_lab_v6';
+      const TOTAL_SEGS = 20;
+      const RING_CIRC = 257.61;
+
+      const AFORO_DATA = {
+        25: {
+          code: '1/4',
+          pct: 25,
+          people: '35',
+          range: '30 – 45 PERS.',
+          ring: '1–2 FILAS · N2',
+          dynamics: 'Núcleo base de entrenamiento en las bancas de la Alameda. Ambiente cercano ideal para afinar claridad y ritmo.'
+        },
+        50: {
+          code: '1/2',
+          pct: 50,
+          people: '90',
+          range: '70 – 110 PERS.',
+          ring: '2–3 ANILLOS · N3',
+          dynamics: 'Punto habitual de tarde en Bellas Artes: transeúntes y visitantes se suman al círculo y elevan la energía escénica.'
+        },
+        75: {
+          code: '3/4',
+          pct: 75,
+          people: '170',
+          range: '140 – 200 PERS.',
+          ring: '3–4 ANILLOS · N4',
+          dynamics: 'Círculo compacto con energía alta y reacción grupal rápida: el entorno exige claridad vocal y manejo consciente del ritmo ante ovaciones fuertes.'
+        },
+        100: {
+          code: 'LLENO',
+          pct: 100,
+          people: '280+',
+          range: '250 – 300+ PERS.',
+          ring: '5 ANILLOS · N5',
+          dynamics: 'Aforo completo de competencia: bancas y periferia llenas. Máxima proyección, presencia escénica y pausa activa bajo presión.'
+        }
+      };
+
+      const TIME_SLOTS = {
+        tarde: {
+          label: '15–17H',
+          energyBias: 55,
+          transit: 10,
+          community: 40,
+          families: 20,
+          tourists: 30,
+          propensity: 'Mayor presencia de visitantes del Palacio de Bellas Artes y comunidad iniciando entrenamientos: audiencia curiosa que valora carisma accesible y creatividad visual.'
+        },
+        pico: {
+          label: '17–20H PICO',
+          energyBias: 72,
+          transit: 35,
+          community: 30,
+          families: 20,
+          tourists: 15,
+          propensity: 'Flujo alto saliendo de Metro Bellas Artes y calle Madero: audiencia abierta al descubrimiento que responde con rapidez al carisma, la claridad y referencias visibles del entorno.'
+        },
+        noche: {
+          label: '20–22H',
+          energyBias: 78,
+          transit: 20,
+          community: 60,
+          families: 10,
+          tourists: 10,
+          propensity: 'Disminuye el tránsito turístico y domina el núcleo de freestylers y seguidores habituales: público atento al ingenio, la estructura y el nivel sostenido.'
+        },
+        finde: {
+          label: 'FIN DE SEMANA',
+          energyBias: 88,
+          transit: 15,
+          community: 35,
+          families: 25,
+          tourists: 25,
+          propensity: 'Jornada de competencias activas con familias, paseo dominical y turismo nacional/extranjero: alta participación colectiva ante remates claros y dominio del círculo.'
+        }
+      };
+
+      const BEHAVIORS = {
+        ACELERACION: { name: 'ACELERACIÓN', suggest: '01' },
+        TENSION_ESCENICA: { name: 'PRESIÓN AMBIENTAL', suggest: '02' },
+        SATURACION: { name: 'SATURACIÓN', suggest: '03' },
+        PAUSA_PROCESO: { name: 'PAUSA DE PROCESO', suggest: '04' }
+      };
+
+      const RESOURCES = {
+        '01': { name: 'PAUSA ACTIVA', badge: 'REGULACIÓN' },
+        '02': { name: 'LECTURA DE ENTORNO', badge: 'PRESENCIA' },
+        '03': { name: 'UNA SOLA IDEA', badge: 'ENFOQUE' },
+        '04': { name: 'CONSTRUCCIÓN PROGRESIVA', badge: 'ESTRUCTURA' }
+      };
+
+      const state = {
+        theme: 'orange',
+        aforo: 75,
+        slot: 'pico',
+        behavior: 'ACELERACION',
+        resource: '01',
+        selectedTags: new Set(),
+        micActive: false,
+        tapeRecording: false,
+        tapeStartMs: 0,
+        liveDb: 42,
+        liveScore: 12,
+        peakDb: 42,
+        bandText: 'AMBIENTE',
+        pauseRunning: false,
+        rounds: []
+      };
+
+      const TAPE_LEN = 92;
+      const tapeData = new Array(TAPE_LEN).fill(null).map((_, idx) => ({
+        score: 8 + Math.sin(idx * 0.35) * 4 + 4,
+        peak: false,
+        marker: null
+      }));
+
+      let micStream = null;
+      let micAudioCtx = null;
+      let micAnalyser = null;
+      let micRaf = null;
+      let simRaf = null;
+      let tapeInterval = null;
+      let pauseRaf = null;
+      let toastTimer = null;
+      let smoothedDb = 42;
+      let lastAutoFlag = 0;
+      const sessionStart = Date.now();
+
+      const segWrap = document.getElementById('sonarSegments');
+      const segEls = [];
+      for (let i = 0; i < TOTAL_SEGS; i++) {
+        const d = document.createElement('div');
+        d.className = 'seg-bar';
+        segWrap.appendChild(d);
+        segEls.push(d);
+      }
+
+      setInterval(() => {
+        const sec = Math.floor((Date.now() - sessionStart) / 1000);
+        const m = String(Math.floor(sec / 60)).padStart(2, '0');
+        const s = String(sec % 60).padStart(2, '0');
+        document.getElementById('sessionClock').textContent = m + ':' + s;
+      }, 1000);
+
+      function loadSaved() {
+        try {
+          const raw = localStorage.getItem(STORAGE_KEY);
+          if (!raw) return;
+          const parsed = JSON.parse(raw);
+          if (Array.isArray(parsed.rounds)) state.rounds = parsed.rounds;
+          if (parsed.theme === 'orange' || parsed.theme === 'volt' || parsed.theme === 'nothing') {
+            state.theme = parsed.theme;
+          }
+        } catch (_) {}
+      }
+
+      function persist() {
+        try {
+          localStorage.setItem(STORAGE_KEY, JSON.stringify({
+            theme: state.theme,
+            rounds: state.rounds
+          }));
+        } catch (_) {}
+      }
+
+      function showToast(msg) {
+        const el = document.getElementById('toast');
+        el.textContent = msg;
+        el.style.opacity = '1';
+        clearTimeout(toastTimer);
+        toastTimer = setTimeout(() => { el.style.opacity = '0'; }, 1800);
+      }
+
+      function getAccentHex() {
+        if (state.theme === 'volt') return '#ceff00';
+        if (state.theme === 'nothing') return '#d71921';
+        return '#ff4500';
+      }
+
+      function setTheme(theme) {
+        state.theme = theme;
+        document.documentElement.setAttribute('data-theme', theme);
+        const base = 'font-tech text-[10px] font-semibold px-3 py-1 rounded-full transition-colors ';
+        document.getElementById('btnThemeOrange').className = base + (theme === 'orange' ? 'bg-[#ff4500] text-white' : 'text-[var(--muted)]');
+        document.getElementById('btnThemeVolt').className = base + (theme === 'volt' ? 'bg-[#ceff00] text-black' : 'text-[var(--muted)]');
+        document.getElementById('btnThemeNothing').className = base + (theme === 'nothing' ? 'bg-white text-black' : 'text-[var(--muted)]');
+        drawTape();
+        persist();
+      }
+
+      function drawTape() {
+        const canvas = document.getElementById('tapeCanvas');
+        if (!canvas) return;
+        const rect = canvas.getBoundingClientRect();
+        const dpr = window.devicePixelRatio || 1;
+        const w = Math.max(200, Math.floor(rect.width));
+        const h = Math.max(58, Math.floor(rect.height));
+        if (canvas.width !== w * dpr || canvas.height !== h * dpr) {
+          canvas.width = w * dpr;
+          canvas.height = h * dpr;
+        }
+        const ctx = canvas.getContext('2d');
+        ctx.save();
+        ctx.scale(dpr, dpr);
+        ctx.clearRect(0, 0, w, h);
+
+        const threshY = h - (0.75 * (h - 14)) - 7;
+        ctx.strokeStyle = 'rgba(255,255,255,0.12)';
+        ctx.setLineDash([2, 4]);
+        ctx.lineWidth = 1;
+        ctx.beginPath();
+        ctx.moveTo(0, threshY);
+        ctx.lineTo(w, threshY);
+        ctx.stroke();
+        ctx.setLineDash([]);
+
+        const accent = getAccentHex();
+        const step = w / TAPE_LEN;
+        const barW = Math.max(1.5, step * 0.52);
+
+        for (let i = 0; i < TAPE_LEN; i++) {
+          const item = tapeData[i];
+          const x = i * step;
+          const norm = Math.max(0.06, Math.min(1, item.score / 100));
+          const barH = Math.max(4, norm * (h - 14));
+          const y = h - barH - 4;
+
+          ctx.fillStyle = item.peak || item.score >= 74 ? accent : 'rgba(245,245,245,0.38)';
+          ctx.fillRect(x, y, barW, barH);
+
+          if (item.marker) {
+            ctx.fillStyle = accent;
+            ctx.fillRect(x, 0, 1.5, h);
+            ctx.font = '600 9px "JetBrains Mono", monospace';
+            ctx.fillStyle = '#ffffff';
+            ctx.fillText(item.marker, Math.min(x + 4, w - 48), 11);
+          }
+        }
+
+        ctx.fillStyle = accent;
+        ctx.fillRect(w - 2, 0, 2, h);
+        ctx.restore();
+      }
+
+      function renderReactionCycle() {
+        const af = AFORO_DATA[state.aforo].pct;
+        const sl = TIME_SLOTS[state.slot].energyBias;
+        const reaction = Math.round(Math.min(100, Math.max(10, state.liveScore * 0.45 + af * 0.35 + sl * 0.2)));
+        document.getElementById('reactionCycleVal').textContent = String(reaction);
+        const offset = RING_CIRC - (reaction / 100) * RING_CIRC;
+        document.getElementById('reactionCycleArc').setAttribute('stroke-dashoffset', offset.toFixed(1));
+      }
+
+      function renderAcoustic(db, score, band) {
+        state.liveDb = Math.round(db);
+        state.liveScore = Math.round(score);
+        state.bandText = band;
+        if (state.liveDb > state.peakDb) state.peakDb = state.liveDb;
+
+        document.getElementById('dbLiveValue').textContent = String(state.liveDb).padStart(2, '0');
+        document.getElementById('dbPeakValue').textContent = String(state.peakDb).padStart(2, '0');
+        document.getElementById('scoreLiveValue').textContent = String(state.liveScore);
+        document.getElementById('bandLabel').textContent = band;
+
+        const offset = RING_CIRC - (Math.max(4, Math.min(100, state.liveScore)) / 100) * RING_CIRC;
+        document.getElementById('sonarRingArc').setAttribute('stroke-dashoffset', offset.toFixed(1));
+
+        const litCount = Math.round((state.liveScore / 100) * TOTAL_SEGS);
+        for (let i = 0; i < TOTAL_SEGS; i++) {
+          if (i < litCount) {
+            segEls[i].className = i >= 14 ? 'seg-bar on-hot' : 'seg-bar on-base';
+          } else {
+            segEls[i].className = 'seg-bar';
+          }
+        }
+        renderReactionCycle();
+      }
+
+      function pushTape(score, explicitMarker) {
+        const now = Date.now();
+        let marker = explicitMarker || null;
+        if (!marker && score >= 75 && now - lastAutoFlag > 1400) {
+          lastAutoFlag = now;
+          marker = '▲ ' + state.liveDb + 'dB';
+        }
+        tapeData.shift();
+        tapeData.push({
+          score: score,
+          peak: score >= 75 || Boolean(marker),
+          marker: marker
+        });
+        drawTape();
+      }
+
+      function stopTape() {
+        if (tapeInterval) {
+          clearInterval(tapeInterval);
+          tapeInterval = null;
+        }
+        state.tapeRecording = false;
+        document.getElementById('recBtnText').textContent = 'GRABAR';
+        document.getElementById('tapeReelSvg').classList.remove('reel-spin');
+        document.getElementById('sonarRippleEl').classList.remove('sonar-ripple');
+        document.getElementById('sonarRippleEl').style.opacity = '0';
+        document.getElementById('sonarHeaderStatus').textContent = state.micActive ? 'MIC EN VIVO · EN PAUSA' : 'SONAR ACÚSTICO · PAUSADO';
+        document.getElementById('tapeSubStatus').textContent = 'CINTA PAUSADA · PULSA GRABAR PARA CONTINUAR';
+      }
+
+      function startTape() {
+        stopTape();
+        state.tapeRecording = true;
+        state.tapeStartMs = Date.now();
+        document.getElementById('recBtnText').textContent = 'DETENER';
+        document.getElementById('tapeReelSvg').classList.add('reel-spin');
+        document.getElementById('sonarRippleEl').classList.add('sonar-ripple');
+        document.getElementById('sonarHeaderStatus').textContent = state.micActive ? 'GRABANDO · MIC EN VIVO' : 'GRABANDO · CINTA EN CAMPO';
+        document.getElementById('tapeSubStatus').textContent = state.micActive ? 'EXTRAYENDO PRESIÓN SONORA REAL' : 'CINTA ACTIVA · USA MIC EN IPAD O PULSA IMPACTO';
+
+        tapeInterval = setInterval(() => {
+          const sec = (Date.now() - state.tapeStartMs) / 1000;
+          const m = String(Math.floor(sec / 60)).padStart(2, '0');
+          const s = String(Math.floor(sec % 60)).padStart(2, '0');
+          const d = Math.floor((sec % 1) * 10);
+          document.getElementById('tapeTimecode').textContent = m + ':' + s + '.' + d;
+
+          if (state.micActive || simRaf) {
+            pushTape(state.liveScore, null);
+          } else {
+            const ambScore = 10 + Math.random() * 14;
+            const ambDb = 38 + (ambScore / 100) * 74;
+            renderAcoustic(ambDb, ambScore, 'AMBIENTE');
+            pushTape(ambScore, null);
+          }
+        }, 70);
+      }
+
+      function stopMic() {
+        if (micRaf) { cancelAnimationFrame(micRaf); micRaf = null; }
+        if (micStream) { micStream.getTracks().forEach((t) => t.stop()); micStream = null; }
+        if (micAudioCtx) { micAudioCtx.close().catch(() => {}); micAudioCtx = null; }
+        micAnalyser = null;
+        state.micActive = false;
+        document.getElementById('btnMicToggle').textContent = 'MIC: OFF';
+        document.getElementById('sonarHeaderStatus').textContent = state.tapeRecording ? 'GRABANDO · CINTA EN CAMPO' : 'SONAR ACÚSTICO · LISTO';
+      }
+
+      async function startMic() {
+        const noteEl = document.getElementById('micStatusNote');
+        noteEl.classList.add('hidden');
+        if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
+          noteEl.textContent = 'El micrófono real se activa al abrir este archivo directo en Safari o Chrome desde el iPad. Aquí puedes usar GRABAR e IMPACTO.';
+          noteEl.classList.remove('hidden');
+          return;
+        }
+        try {
+          micStream = await navigator.mediaDevices.getUserMedia({
+            audio: { echoCancellation: false, noiseSuppression: false, autoGainControl: false }
+          });
+          const Ctx = window.AudioContext || window.webkitAudioContext;
+          micAudioCtx = new Ctx();
+          const source = micAudioCtx.createMediaStreamSource(micStream);
+          micAnalyser = micAudioCtx.createAnalyser();
+          micAnalyser.fftSize = 1024;
+          micAnalyser.smoothingTimeConstant = 0.72;
+          source.connect(micAnalyser);
+
+          state.micActive = true;
+          document.getElementById('btnMicToggle').textContent = 'MIC: ON';
+          if (!state.tapeRecording) startTape();
+          else document.getElementById('sonarHeaderStatus').textContent = 'GRABANDO · MIC EN VIVO';
+          showToast('MICRÓFONO EN VIVO');
+
+          const timeData = new Float32Array(micAnalyser.fftSize);
+          const freqData = new Uint8Array(micAnalyser.frequencyBinCount);
+          const sr = micAudioCtx.sampleRate || 48000;
+          const binHz = sr / micAnalyser.fftSize;
+
+          function sampleLoop() {
+            if (!state.micActive || !micAnalyser) return;
+            micAnalyser.getFloatTimeDomainData(timeData);
+            micAnalyser.getByteFrequencyData(freqData);
+            let sumSq = 0;
+            for (let i = 0; i < timeData.length; i++) sumSq += timeData[i] * timeData[i];
+            const rms = Math.sqrt(sumSq / timeData.length);
+            const dbfs = 20 * Math.log10(Math.max(rms, 0.00008));
+            const estDb = Math.max(36, Math.min(115, dbfs + 112));
+            smoothedDb = smoothedDb * 0.72 + estDb * 0.28;
+            const score = Math.max(0, Math.min(100, ((smoothedDb - 36) / 79) * 100));
+
+            let low = 0, high = 0;
+            const l1 = Math.max(1, Math.floor(180 / binHz));
+            const l2 = Math.min(freqData.length - 1, Math.ceil(360 / binHz));
+            const h1 = Math.max(1, Math.floor(800 / binHz));
+            const h2 = Math.min(freqData.length - 1, Math.ceil(2600 / binHz));
+            for (let i = l1; i <= l2; i++) low += freqData[i];
+            for (let i = h1; i <= h2; i++) high += freqData[i];
+            const lowAvg = low / Math.max(1, l2 - l1 + 1);
+            const highAvg = high / Math.max(1, h2 - h1 + 1);
+
+            let band = 'AMBIENTE';
+            if (smoothedDb >= 78) band = highAvg > lowAvg * 0.85 ? 'OVACIÓN AGUDA' : 'OVACIÓN GRAVE';
+            else if (smoothedDb >= 60) band = 'VOZ ACTIVA';
+
+            renderAcoustic(smoothedDb, score, band);
+            micRaf = requestAnimationFrame(sampleLoop);
+          }
+          micRaf = requestAnimationFrame(sampleLoop);
+        } catch (_) {
+          noteEl.textContent = 'Permiso de micrófono restringido en esta vista previa. Al subirlo a HTTPS y abrirlo en Safari/Chrome del iPad captará audio real; aquí puedes probar con GRABAR + IMPACTO.';
+          noteEl.classList.remove('hidden');
+        }
+      }
+
+      function triggerImpactWave() {
+        if (!state.tapeRecording) startTape();
+        if (simRaf) cancelAnimationFrame(simRaf);
+        const start = performance.now();
+        const total = 2300;
+        function step(now) {
+          const t = (now - start) / total;
+          if (t >= 1) {
+            simRaf = null;
+            return;
+          }
+          let env;
+          if (t < 0.2) env = t / 0.2;
+          else if (t < 0.45) env = 1 - (t - 0.2) * 0.2;
+          else env = Math.max(0, 0.95 * Math.pow(1 - (t - 0.45) / 0.55, 1.35));
+
+          const db = Math.max(40, Math.min(112, 44 + env * 65 + (Math.random() - 0.5) * 4));
+          const score = Math.max(0, Math.min(100, ((db - 36) / 79) * 100));
+          const band = db >= 92 ? 'OVACIÓN AGUDA' : db >= 78 ? 'OVACIÓN GRAVE' : 'VOZ ACTIVA';
+          renderAcoustic(db, score, band);
+          simRaf = requestAnimationFrame(step);
+        }
+        simRaf = requestAnimationFrame(step);
+      }
+
+      function renderAforo() {
+        const d = AFORO_DATA[state.aforo];
+        document.getElementById('aforoPeopleVal').textContent = d.people;
+        document.getElementById('aforoRangeTag').textContent = d.range;
+        document.getElementById('aforoRingTag').textContent = d.ring;
+        document.getElementById('aforoDynamicsText').textContent = d.dynamics;
+        document.getElementById('aforoCycleVal').textContent = String(d.pct);
+
+        const offset = RING_CIRC - (d.pct / 100) * RING_CIRC;
+        document.getElementById('aforoCycleArc').setAttribute('stroke-dashoffset', offset.toFixed(1));
+
+        document.querySelectorAll('[data-aforo]').forEach((btn) => {
+          btn.classList.toggle('is-active', Number(btn.dataset.aforo) === state.aforo);
+        });
+        renderReactionCycle();
+      }
+
+      function renderSlot() {
+        const s = TIME_SLOTS[state.slot];
+        document.getElementById('pctTransit').textContent = s.transit + '%';
+        document.getElementById('barTransit').style.width = s.transit + '%';
+        document.getElementById('pctCommunity').textContent = s.community + '%';
+        document.getElementById('barCommunity').style.width = s.community + '%';
+        document.getElementById('pctFamilies').textContent = s.families + '%';
+        document.getElementById('barFamilies').style.width = s.families + '%';
+        document.getElementById('pctTourists').textContent = s.tourists + '%';
+        document.getElementById('barTourists').style.width = s.tourists + '%';
+        document.getElementById('slotPropensityText').textContent = s.propensity;
+        document.querySelectorAll('[data-slot]').forEach((btn) => {
+          btn.classList.toggle('is-active', btn.dataset.slot === state.slot);
+        });
+        renderReactionCycle();
+      }
+
+      function renderBehaviorAndResource() {
+        const sug = BEHAVIORS[state.behavior].suggest;
+        document.querySelectorAll('.behavior-card').forEach((card) => {
+          card.classList.toggle('is-selected', card.dataset.behavior === state.behavior);
+        });
+        document.querySelectorAll('.resource-card').forEach((card) => {
+          const id = card.dataset.resource;
+          const isAct = id === state.resource;
+          const isSug = id === sug;
+          card.classList.toggle('is-active', isAct);
+          card.classList.toggle('is-suggested', isSug);
+          const b = card.querySelector('.res-badge');
+          if (b) b.textContent = isSug ? 'SUGERIDO · ' + RESOURCES[id].badge : RESOURCES[id].badge;
+        });
+      }
+
+      function runPauseTimer() {
+        if (state.pauseRunning) return;
+        state.pauseRunning = true;
+        const duration = 2000;
+        const start = performance.now();
+        const el = document.getElementById('pauseTimerText');
+        function frame(now) {
+          const elapsed = now - start;
+          const rem = Math.max((duration - elapsed) / 1000, 0);
+          el.textContent = rem.toFixed(1) + 'S';
+          if (elapsed < duration) {
+            pauseRaf = requestAnimationFrame(frame);
+          } else {
+            state.pauseRunning = false;
+            el.textContent = 'LISTO';
+            setTimeout(() => { if (!state.pauseRunning) el.textContent = '2.0S'; }, 900);
+          }
+        }
+        pauseRaf = requestAnimationFrame(frame);
+      }
+
+      function renderRoundMeta() {
+        document.getElementById('headerRoundBadge').textContent = 'RONDA ' + String(state.rounds.length + 1).padStart(2, '0');
+        document.getElementById('logCountBadge').textContent = String(state.rounds.length);
+      }
+
+      function escapeHtml(str) {
+        return String(str).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+      }
+
+      function renderLogList() {
+        const container = document.getElementById('logList');
+        if (!state.rounds.length) {
+          container.innerHTML = '<div class="rounded-2xl border border-dashed border-[var(--border)] p-6 text-center"><p class="font-tech text-[10px] text-[var(--muted)]">SIN REGISTROS TODAVÍA</p><p class="text-xs text-[var(--muted)] mt-1">Guarda cada ronda con su aforo, pico de dB y recurso aplicado.</p></div>';
+          return;
+        }
+        container.innerHTML = state.rounds.slice().reverse().map((r) => {
+          const tagsHtml = r.tags.length
+            ? r.tags.map((t) => '<span class="font-tech text-[9px] px-2 py-0.5 rounded-full border border-[var(--border)] text-[var(--text)]">' + escapeHtml(t) + '</span>').join('')
+            : '';
+          return (
+            '<article class="rounded-2xl bg-[var(--bg)] border border-[var(--border)] p-3.5">' +
+              '<div class="flex items-center justify-between gap-2">' +
+                '<div class="flex items-center gap-2 flex-wrap">' +
+                  '<span class="font-tech text-[10px] text-[var(--accent)]">R' + String(r.num).padStart(2, '0') + '</span>' +
+                  '<span class="font-nike font-bold text-lg uppercase">AFORO ' + escapeHtml(r.aforoCode) + ' · ' + r.peakDb + ' dB</span>' +
+                '</div>' +
+                '<button type="button" class="btn-del-round font-tech text-[9px] text-[var(--muted)] hover:text-red-400" data-id="' + r.id + '">BORRAR</button>' +
+              '</div>' +
+              '<p class="font-tech text-[9px] text-[var(--muted)] mt-1">' + escapeHtml(r.slotLabel) + ' · ' + escapeHtml(r.behaviorName) + ' → ' + escapeHtml(r.resourceName) + '</p>' +
+              (tagsHtml ? '<div class="flex flex-wrap gap-1 mt-2">' + tagsHtml + '</div>' : '') +
+              (r.note ? '<p class="text-xs text-[var(--text)] mt-2 leading-relaxed">' + escapeHtml(r.note) + '</p>' : '') +
+              '<p class="font-tech text-[9px] text-[var(--muted)] mt-2">' + escapeHtml(r.time) + '</p>' +
+            '</article>'
+          );
+        }).join('');
+      }
+
+      function buildReport() {
+        const lines = [
+          'BELLAS ARTES LAB — BITÁCORA DE PRÁCTICA',
+          'Fecha: ' + new Date().toLocaleDateString('es-MX'),
+          'Rondas registradas: ' + state.rounds.length,
+          ''
+        ];
+        state.rounds.forEach((r) => {
+          lines.push('Ronda ' + String(r.num).padStart(2, '0') + ' [' + r.time + ']');
+          lines.push('  Aforo: ' + r.aforoCode + ' (' + r.people + ' est.) | Horario: ' + r.slotLabel + ' | Pico acústico: ' + r.peakDb + ' dB');
+          lines.push('  Comportamiento: ' + r.behaviorName + ' -> Recurso: ' + r.resourceName);
+          if (r.tags.length) lines.push('  Indicadores: ' + r.tags.join(', '));
+          if (r.note) lines.push('  Nota: ' + r.note);
+          lines.push('');
+        });
+        return lines.join('\n');
+      }
+
+      function copyText(text) {
+        if (navigator.clipboard && navigator.clipboard.writeText) {
+          navigator.clipboard.writeText(text).then(() => showToast('BITÁCORA COPIADA')).catch(() => fallbackCopy(text));
+        } else {
+          fallbackCopy(text);
+        }
+      }
+
+      function fallbackCopy(text) {
+        const ta = document.createElement('textarea');
+        ta.value = text;
+        ta.style.position = 'fixed';
+        ta.style.opacity = '0';
+        document.body.appendChild(ta);
+        ta.select();
+        try { document.execCommand('copy'); showToast('BITÁCORA COPIADA'); } catch (_) { showToast('NO SE PUDO COPIAR'); }
+        document.body.removeChild(ta);
+      }
+
+      // Bindings
+      document.getElementById('btnThemeOrange').addEventListener('click', () => setTheme('orange'));
+      document.getElementById('btnThemeVolt').addEventListener('click', () => setTheme('volt'));
+      document.getElementById('btnThemeNothing').addEventListener('click', () => setTheme('nothing'));
+
+      document.getElementById('btnMicToggle').addEventListener('click', () => {
+        if (state.micActive) stopMic();
+        else startMic();
+      });
+
+      document.getElementById('btnRecTape').addEventListener('click', () => {
+        if (state.tapeRecording) stopTape();
+        else startTape();
+      });
+
+      document.getElementById('btnSimSpike').addEventListener('click', triggerImpactWave);
+
+      document.getElementById('btnMarkEvent').addEventListener('click', () => {
+        if (!state.tapeRecording) startTape();
+        pushTape(Math.max(state.liveScore, 84), '★ IMPACTO');
+        showToast('EVENTO MARCADO EN CINTA');
+      });
+
+      document.getElementById('btnResetPeak').addEventListener('click', () => {
+        state.peakDb = state.liveDb;
+        document.getElementById('dbPeakValue').textContent = String(state.peakDb).padStart(2, '0');
+        showToast('PICO REINICIADO');
+      });
+
+      document.querySelectorAll('[data-aforo]').forEach((btn) => {
+        btn.addEventListener('click', () => {
+          state.aforo = Number(btn.dataset.aforo);
+          renderAforo();
+        });
+      });
+
+      document.querySelectorAll('[data-slot]').forEach((btn) => {
+        btn.addEventListener('click', () => {
+          state.slot = btn.dataset.slot;
+          renderSlot();
+        });
+      });
+
+      document.querySelectorAll('.behavior-card').forEach((card) => {
+        card.addEventListener('click', () => {
+          state.behavior = card.dataset.behavior;
+          state.resource = card.dataset.suggest;
+          renderBehaviorAndResource();
+        });
+      });
+
+      document.querySelectorAll('.resource-card').forEach((card) => {
+        card.addEventListener('click', () => {
+          state.resource = card.dataset.resource;
+          renderBehaviorAndResource();
+        });
+      });
+
+      document.getElementById('btnPauseTimer').addEventListener('click', runPauseTimer);
+
+      document.querySelectorAll('#outcomeTags .tag-pill').forEach((btn) => {
+        btn.addEventListener('click', () => {
+          const t = btn.dataset.tag;
+          if (state.selectedTags.has(t)) {
+            state.selectedTags.delete(t);
+            btn.classList.remove('is-selected');
+          } else {
+            state.selectedTags.add(t);
+            btn.classList.add('is-selected');
+          }
+        });
+      });
+
+      document.getElementById('btnSaveRound').addEventListener('click', () => {
+        const noteEl = document.getElementById('fieldNoteInput');
+        const af = AFORO_DATA[state.aforo];
+        const sl = TIME_SLOTS[state.slot];
+        const entry = {
+          id: String(Date.now()),
+          num: state.rounds.length + 1,
+          aforoCode: af.code,
+          people: af.people,
+          slotLabel: sl.label,
+          peakDb: state.peakDb,
+          behaviorName: BEHAVIORS[state.behavior].name,
+          resourceName: RESOURCES[state.resource].name,
+          tags: Array.from(state.selectedTags),
+          note: noteEl.value.trim(),
+          time: new Date().toLocaleTimeString('es-MX', { hour: '2-digit', minute: '2-digit' })
+        };
+        state.rounds.push(entry);
+        persist();
+        state.selectedTags.clear();
+        document.querySelectorAll('#outcomeTags .tag-pill').forEach((b) => b.classList.remove('is-selected'));
+        noteEl.value = '';
+        renderRoundMeta();
+        renderLogList();
+        showToast('RONDA ' + String(entry.num).padStart(2, '0') + ' GUARDADA');
+      });
+
+      const logModal = document.getElementById('logModal');
+      document.getElementById('btnOpenLog').addEventListener('click', () => { renderLogList(); logModal.classList.remove('hidden'); });
+      document.getElementById('btnCloseLog').addEventListener('click', () => logModal.classList.add('hidden'));
+      logModal.addEventListener('click', (e) => { if (e.target === logModal) logModal.classList.add('hidden'); });
+
+      document.getElementById('logList').addEventListener('click', (e) => {
+        const del = e.target.closest('.btn-del-round');
+        if (!del) return;
+        state.rounds = state.rounds.filter((r) => r.id !== del.dataset.id);
+        persist();
+        renderRoundMeta();
+        renderLogList();
+        showToast('REGISTRO ELIMINADO');
+      });
+
+      document.getElementById('btnCopyLog').addEventListener('click', () => {
+        if (!state.rounds.length) { showToast('SIN RONDAS AÚN'); return; }
+        copyText(buildReport());
+      });
+
+      document.getElementById('btnDownloadLog').addEventListener('click', () => {
+        if (!state.rounds.length) { showToast('SIN RONDAS AÚN'); return; }
+        const blob = new Blob([buildReport()], { type: 'text/plain;charset=utf-8' });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = 'bellas_artes_lab.txt';
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        URL.revokeObjectURL(url);
+        showToast('BITÁCORA EXPORTADA');
+      });
+
+      document.getElementById('btnClearLog').addEventListener('click', () => {
+        if (!state.rounds.length) return;
+        state.rounds = [];
+        persist();
+        renderRoundMeta();
+        renderLogList();
+        showToast('SESIÓN REINICIADA');
+      });
+
+      window.addEventListener('resize', drawTape);
+
+      // Init
+      loadSaved();
+      setTheme(state.theme);
+      renderAcoustic(42, 12, 'AMBIENTE');
+      renderAforo();
+      renderSlot();
+      renderBehaviorAndResource();
+      renderRoundMeta();
+      drawTape();
+    })();
+  </script>
+</body>
+</html>
